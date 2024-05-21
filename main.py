@@ -1,7 +1,9 @@
 import math
 
 with open("muons.txt", "r") as f, open("results.txt", "a") as r:
-    muons = f.read().split("\n\n")
+    i = 0
+    m1 = ""
+    m2 = ""
 
     def getInfoFromMuon(muon):
         pt = muon.split(" ")[2]
@@ -28,19 +30,16 @@ with open("muons.txt", "r") as f, open("results.txt", "a") as r:
 
         return str(invariantMass)
 
-    for muon in muons:
-        mu = muon.splitlines()
-        m1, m2 = mu[2], mu[3]
+    for line in f:
+        if i % 5 == 2:
+            m1 = line
+        if i % 5 == 3:
+            m2 = line
 
-        # m1pt, m1eta, m1phi, m1m = getInfoFromMuon(m1)
-        # m2pt, m2eta, m2phi, m2m = getInfoFromMuon(m2)
+            m1e, m1x, m1y, m1z = calculate4Vector(m1)
+            m2e, m2x, m2y, m2z = calculate4Vector(m2)
 
-        m1e, m1x, m1y, m1z = calculate4Vector(m1)
-        m2e, m2x, m2y, m2z = calculate4Vector(m2)
+            invariantMass = calculateInvariantMass(m1e, m1x, m1y, m1z, m2e, m2x, m2y, m2z)
 
-        invariantMass = calculateInvariantMass(m1e, m1x, m1y, m1z, m2e, m2x, m2y, m2z)
-
-        r.write(f"invariant mass= {invariantMass}\n")
-        # print(m1, m2)
-
-    
+            r.write(f"invariant mass= {invariantMass}\n")
+        i+=1
