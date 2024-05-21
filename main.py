@@ -12,12 +12,13 @@ with open("muons.txt", "r") as f, open("results.txt", "a") as r:
         
     def calculate4Vector(muon):
         pt, eta, phi, m = getInfoFromMuon(muon)
+        
+        momentum = pt * math.cosh(eta)
 
-        momentum = pt/math.cos(eta)
-
-        z = momentum * math.sin(eta)
         x = pt * math.cos(phi)
         y = pt * math.sin(phi)
+        z = pt * math.sinh(eta)
+ 
         e = math.sqrt(math.pow(m, 2) + math.pow(momentum, 2))
 
         return e, x, y, z
