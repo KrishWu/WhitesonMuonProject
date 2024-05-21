@@ -10,7 +10,9 @@ with open("muons.txt", "r") as f, open("results.txt", "a") as r:
         m = muon.split(" ")[5]
         return float(pt), float(eta), float(phi), float(m)
         
-    def calculate4Vector(pt, eta, phi, m):
+    def calculate4Vector(muon):
+        pt, eta, phi, m = getInfoFromMuon(muon)
+
         momentum = pt/math.cos(eta)
 
         z = momentum * math.sin(eta)
@@ -18,13 +20,10 @@ with open("muons.txt", "r") as f, open("results.txt", "a") as r:
         y = pt * math.sin(phi)
         e = math.sqrt(math.pow(m, 2) + math.pow(momentum, 2))
 
-        return f"{e} {x} {y} {z}"
+        return e, x, y, z
 
-    def calculateInvariantMass(pt, eta, m):
-        momentum = pt/math.cos(eta)
-
-        e = math.sqrt(math.pow(m, 2) + math.pow(momentum, 2))
-        invariantMass = math.sqrt(math.pow(e, 2) - math.pow(momentum, 2))
+    def calculateInvariantMass(e1, x1, y1, z1, e2, x2, y2, z2):
+        invariantMass = math.sqrt(math.pow(e1 + e2, 2) - (math.pow(x1 + x2, 2) + math.pow(y1 + y2, 2) + math.pow(z1 + z2, 2)))
 
         return str(invariantMass)
 
@@ -32,11 +31,15 @@ with open("muons.txt", "r") as f, open("results.txt", "a") as r:
         mu = muon.splitlines()
         m1, m2 = mu[2], mu[3]
 
-        m1pt, m1eta, m1phi, m1m = getInfoFromMuon(m1)
-        m2pt, m2eta, m2phi, m2m = getInfoFromMuon(m2)
+        # m1pt, m1eta, m1phi, m1m = getInfoFromMuon(m1)
+        # m2pt, m2eta, m2phi, m2m = getInfoFromMuon(m2)
 
-        r.write(f"m1: 4-vector(e x y z), invariant mass= ({calculate4Vector(m1pt, m1eta, m1phi, m1m)}) {calculateInvariantMass(m1pt, m1eta, m1m)}\n")
-        r.write(f"m2: 4-vector(e x y z), invariant mass= ({calculate4Vector(m2pt, m2eta, m2phi, m2m)}) {calculateInvariantMass(m2pt, m2eta, m2m)}\n\n")
+        m1e, m1x, m1y, m1z = calculate4Vector(m1)
+        m2e, m2x, m2y, m2z = calculate4Vector(m2)
+
+        invariantMass = calculateInvariantMass(m1e, m1x, m1y, m1z, m2e, m2x, m2y, m2z)
+
+        r.write(f"invariant mass= {invariantMass}\n")
         # print(m1, m2)
 
     
