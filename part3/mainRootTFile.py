@@ -1,9 +1,13 @@
 import ROOT
+import sys
 
-with open("muons.txt", "r") as f, open("resultsRoot.txt", "a") as r:
+with open("../muons.txt", "r") as f, ROOT.TFile("file1.root", "recreate") as outfile:
     i = 0
     m1 = ROOT.TLorentzVector()
     m2 = ROOT.TLorentzVector()
+    highestMass = 0
+    lowestMass = sys.maxsize
+    hout = ROOT.TH1F("h1", "Invariant Mass Histogram;Mass;# of Particles", 20, 300, 700)
 
     def getInfoFromMuon(muon):
         pt = muon.split(" ")[2]
@@ -22,5 +26,14 @@ with open("muons.txt", "r") as f, open("resultsRoot.txt", "a") as r:
 
             invariantMass = (m1 + m2).M()
 
-            r.write(f"invariant mass= {invariantMass}\n")
+            if invariantMass > highestMass:
+                highestMass = invariantMass
+            elif invariantMass < lowestMass:
+                lowestMass = invariantMass
+
+            hout.Fill(invariantMass)
         i+=1
+    
+    hout.GetXaxis().SetRangeUser(lowestMass, highestMass)
+    outfile.WriteObject(hout, "histogram")
+    hout.Draw()
