@@ -1,6 +1,6 @@
 import ROOT
 
-with open("../muons.txt", "r") as f, open("resultsRoot.txt", "a") as r:
+with open("muons.txt", "r") as f, open("part2/resultsRoot.txt", "a") as r:
     i = 0
     m1 = ROOT.TLorentzVector()
     m2 = ROOT.TLorentzVector()

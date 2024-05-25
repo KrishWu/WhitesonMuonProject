@@ -1,6 +1,6 @@
 import math
 
-with open("../muons.txt", "r") as f, open("results.txt", "a") as r:
+with open("muons.txt", "r") as f, open("part1/results.txt", "a") as r:
     i = 0
     m1 = ""
     m2 = ""

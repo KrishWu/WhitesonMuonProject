@@ -1,7 +1,7 @@
 import ROOT
 import sys
 
-with open("../muons.txt", "r") as f, ROOT.TFile("file1.root", "recreate") as outfile:
+with open("muons.txt", "r") as f, ROOT.TFile("part3/file1.root", "recreate") as outfile:
     i = 0
     m1 = ROOT.TLorentzVector()
     m2 = ROOT.TLorentzVector()
