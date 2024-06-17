@@ -1,6 +1,7 @@
 import ROOT
 import sys
 
+ROOT.gInterpreter.AddIncludePath("~/physics/delphes-master/external/")
 ROOT.gSystem.Load("~/physics/delphes-master/libDelphes.so")
 
 with ROOT.TFile("./part5/Tag 1 Delphes Events.root", "read") as f, ROOT.TFile("part5/output.root", "recreate") as outfile:
