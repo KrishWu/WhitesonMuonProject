@@ -24,12 +24,12 @@ with ROOT.TFile("./part6/Tag 1 Delphes Events.root", "read") as f, ROOT.TFile("p
         for i in range(numParticles - 1):
             for j in range (numParticles - 1):
                 if (j >= i):
-                    m1.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(i), event.GetLeaf("Jet", "Jet.Eta").GetValue(i), event.GetLeaf("Jet", "Jet.Phi").GetValue(i), event.GetLeaf("Jet", "Jet.Charge").GetValue(i))
-                    m2.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(j + 1), event.GetLeaf("Jet", "Jet.Eta").GetValue(j + 1), event.GetLeaf("Jet", "Jet.Phi").GetValue(j + 1), event.GetLeaf("Jet", "Jet.Charge").GetValue(j + 1))
+                    m1.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(i), event.GetLeaf("Jet", "Jet.Eta").GetValue(i), event.GetLeaf("Jet", "Jet.Phi").GetValue(i), event.GetLeaf("Jet", "Jet.Mass").GetValue(i))
+                    m2.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(j + 1), event.GetLeaf("Jet", "Jet.Eta").GetValue(j + 1), event.GetLeaf("Jet", "Jet.Phi").GetValue(j + 1), event.GetLeaf("Jet", "Jet.Mass").GetValue(j + 1))
                     # print(i, j + 1)
                 else:
-                    m1.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(i), event.GetLeaf("Jet", "Jet.Eta").GetValue(i), event.GetLeaf("Jet", "Jet.Phi").GetValue(i), event.GetLeaf("Jet", "Jet.Charge").GetValue(i))
-                    m2.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(j), event.GetLeaf("Jet", "Jet.Eta").GetValue(j), event.GetLeaf("Jet", "Jet.Phi").GetValue(j), event.GetLeaf("Jet", "Jet.Charge").GetValue(j))
+                    m1.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(i), event.GetLeaf("Jet", "Jet.Eta").GetValue(i), event.GetLeaf("Jet", "Jet.Phi").GetValue(i), event.GetLeaf("Jet", "Jet.Mass").GetValue(i))
+                    m2.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(j), event.GetLeaf("Jet", "Jet.Eta").GetValue(j), event.GetLeaf("Jet", "Jet.Phi").GetValue(j), event.GetLeaf("Jet", "Jet.Mass").GetValue(j))
                     # print(i, j)
                 tempInvariantMass = (m1+m2).M()
                 # print("temp", tempInvariantMass, "actual", invariantMass)
