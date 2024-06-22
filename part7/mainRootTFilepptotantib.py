@@ -66,6 +66,9 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
             continue
         
         houtWBoson.Fill(wBoson.M())
+
+        if (numBJets < 1):
+            continue
         
         for i in range(numParticles):
             #Check if either particle is not a B particle and if so continue.
