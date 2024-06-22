@@ -1,6 +1,6 @@
 import ROOT
-import sys
-import math
+# import sys
+# import math
 
 ROOT.gInterpreter.AddIncludePath("~/physics/delphes-master/external/")
 ROOT.gSystem.Load("~/physics/delphes-master/libDelphes.so")
@@ -25,8 +25,7 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
         tParticle = ROOT.TLorentzVector()
         wUpdated = False
         tUpdated = False
-        numBJetsPositiveCharged = 0
-        numBJetsNegativeCharged = 0
+        numBJets = 0
         numNonBJets = 0
 
         #Check if not enough particles.
@@ -36,10 +35,7 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
         #Count how many of each type of particle B or notB.
         for i in range(numParticles):
             if (event.GetLeaf("Jet", "Jet.BTag").GetValue(i) == 1):
-                if (event.GetLeaf("Jet", "Jet.Charge").GetValue(i) > 0):
-                    numBJetsPositiveCharged += 1
-                else:
-                    numBJetsNegativeCharged += 1
+                numBJets += 1
             else:
                 numNonBJets += 1
         
@@ -71,13 +67,9 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
         
         houtWBoson.Fill(wBoson.M())
         
-        #Check if there is enough of each type of particle B.
-        if (numBJetsNegativeCharged < 1):
-            continue
-        
         for i in range(numParticles):
             #Check if either particle is not a B particle and if so continue.
-            if (event.GetLeaf("Jet", "Jet.BTag").GetValue(i) == 0 or event.GetLeaf("Jet", "Jet.Charge").GetValue(i) > 0):
+            if (event.GetLeaf("Jet", "Jet.BTag").GetValue(i) == 0):
                 continue
             #Calculate the mass of the T Particle and check if it is closer.
             m3.SetPtEtaPhiM(event.GetLeaf("Jet", "Jet.PT").GetValue(i), event.GetLeaf("Jet", "Jet.Eta").GetValue(i), event.GetLeaf("Jet", "Jet.Phi").GetValue(i), event.GetLeaf("Jet", "Jet.Mass").GetValue(i))
