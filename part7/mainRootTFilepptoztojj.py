@@ -21,8 +21,10 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
 
     for event in tree: 
         numParticles = event.GetLeaf("Jet", "Jet.PT").GetLen()
-        wBoson = m1
-        tParticle = m3
+        wBoson = ROOT.TLorentzVector()
+        tParticle = ROOT.TLorentzVector()
+        wUpdated = False
+        tUpdated = False
         numBJetsPositiveCharged = 0
         numBJetsNegativeCharged = 0
         numNonBJets = 0
@@ -61,7 +63,12 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
                 tempWBoson = m1+m2
                 if (abs(tempWBoson.M() - massOfWBoson) < abs(wBoson.M() - massOfWBoson)):
                     wBoson = tempWBoson
+                    wUpdated = True
+                    # print(i, tempJ)
 
+        if (not wUpdated):
+            continue
+        
         houtWBoson.Fill(wBoson.M())
         
         #Check if there is enough of each type of particle B.
@@ -77,12 +84,17 @@ with ROOT.TFile("./part7/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
             tempTParticle = wBoson+m3
             if (abs(tempTParticle.M() - massOfTParticle) < abs(tParticle.M() - massOfTParticle)):
                 tParticle = tempTParticle
+                tUpdated = True
+                # print(i)
         
         # #For auto scaling the x-axis.
         # if invariantMass > highestMass:
         #     highestMass = invariantMass
         # elif invariantMass < lowestMass:
         #     lowestMass = invariantMass
+
+        if (not tUpdated):
+            continue
         
         houtTParticle.Fill(tParticle.M())
 
