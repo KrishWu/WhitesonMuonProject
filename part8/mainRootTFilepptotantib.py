@@ -22,7 +22,7 @@ with ROOT.TFile("./part8/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
         numParticles = event.GetLeaf("Jet", "Jet.PT").GetLen()
         wBoson = ROOT.TLorentzVector()
         tParticle = ROOT.TLorentzVector()
-        numBJetsPositiveCharged = 0
+        numBJets = 0
         numBJetsNegativeCharged = 0
         numNonBJets = 0
         isUpdated = False
@@ -34,15 +34,12 @@ with ROOT.TFile("./part8/tag_1_delphes_events.root", "read") as f, ROOT.TFile("p
         #Count how many of each type of particle B or notB.
         for i in range(numParticles):
             if (event.GetLeaf("Jet", "Jet.BTag").GetValue(i) == 1):
-                if (event.GetLeaf("Jet", "Jet.Charge").GetValue(i) > 0):
-                    numBJetsPositiveCharged += 1
-                else:
-                    numBJetsNegativeCharged += 1
+                numBJets += 1
             else:
                 numNonBJets += 1
         
         #Check if there is enough of each type of particle notB.
-        if (numNonBJets < 2 or numBJetsNegativeCharged < 1):
+        if (numNonBJets < 2 or numBJets < 1):
             continue
 
         for i in range(numParticles - 1):
